@@ -1,36 +1,46 @@
 {
-  "observacao": "Marca do perfil de educação financeira Papo de Grana. O logo da arte fica no arquivo logo.png.",
-  "nome": "Papo de Grana",
-  "descricao": "Perfil de educação financeira para jovens que ainda não sabem investir. Explica do zero, sem enrolação, sem prometer ganhos e sem indicar produtos.",
-  "tom_de_voz": "Próximo e descontraído, como um amigo que entende de dinheiro e explica sem enrolar. Frases curtas. Quando usar um termo técnico, explica logo em seguida. Pode ter humor leve, nunca às custas de quem está endividado. Sem exageros, sem promessas e sem gírias forçadas. Trata o leitor por você.",
+  "observacao": "Marca do perfil de automobilismo Pneu Macio. O logo da arte fica no arquivo logo.png.",
+  "nome": "Pneu Macio",
+  "descricao": "Perfil de automobilismo com foco na Fórmula 1: notícias do dia com fonte, resultados, bastidores explicados e posts para o fã conversar. Rápido como pneu macio, sem inventar nada.",
+  "tom_de_voz": "Fã que entende do assunto e fala com energia, sem exagero. Frases curtas e diretas. Explica o termo técnico na hora (undercut, DRS, parc fermé). Humor leve, sem provocar torcidas nem ofender pilotos. Notícia é notícia: tom factual, sem sensacionalismo. Trata o leitor por você.",
   "valores": [
-    "clareza",
-    "honestidade",
-    "autonomia financeira"
+    "precisão",
+    "paixão pelo esporte",
+    "respeito às torcidas"
   ],
   "objetivos_de_negocio": [
-    "Ensinar a base antes de investir: organizar o orçamento, sair das dívidas caras e montar a reserva de emergência.",
-    "Explicar como funcionam os investimentos mais comuns, como Tesouro Direto, CDB, fundos e ações, sem recomendar produto, instituição, valor ou momento de compra.",
-    "Proteger contra golpes e promessas de ganho rápido, como pirâmides, falsos gurus e apostas vendidas como investimento.",
-    "Mostrar que dá para começar com pouco e que a constância importa mais do que o valor.",
+    "Ser a fonte rápida e confiável das notícias do automobilismo, sempre com a fonte citada.",
+    "Explicar regras, estratégia e tecnologia para quem está começando a acompanhar.",
+    "Gerar conversa: enquetes, debates e perguntas que façam o seguidor comentar.",
+    "Acompanhar os brasileiros no automobilismo mundial.",
     "Fazer o seguidor salvar e compartilhar os posts."
   ],
   "cores": {
-    "primaria": "#0B3B2E",
-    "secundaria": "#C8F169",
+    "primaria": "#15171C",
+    "secundaria": "#FF3B30",
     "texto_sobre_primaria": "#FFFFFF",
-    "texto_sobre_secundaria": "#0B3B2E"
+    "texto_sobre_secundaria": "#15171C",
+    "fundo_claro": "#F1F1EE"
   },
   "fontes": {
-    "titulo": "Poppins-Bold.ttf",
-    "destaque": "Poppins-Medium.ttf",
-    "texto": "Poppins-Regular.ttf"
+    "titulo": "BarlowCondensed-ExtraBoldItalic.ttf",
+    "destaque": "BarlowCondensed-SemiBold.ttf",
+    "texto": "Barlow-Medium.ttf"
   },
   "logo": "logo.png",
-  "estilos_visuais": {
-    "fotografia_lifestyle": "Editorial lifestyle photograph, natural daylight, warm and optimistic mood, authentic everyday Brazilian setting, realistic skin tones, shallow depth of field, clean uncluttered composition",
-    "ilustracao_flat": "Flat vector illustration, clean geometric shapes, solid colors, friendly and modern, generous negative space",
-    "render_3d_suave": "Soft 3D render, rounded clay-like shapes, gentle studio lighting, soft tones, minimal scene"
+  "design_padrao": {
+    "fundo": "escuro"
   },
-  "restricoes_visuais_en": "Absolutely no text, letters, numbers, words, signage, readable screens, logos, brand marks, watermarks, banknotes or coins, credit cards with numbers, and no real public figures."
+  "estilos_visuais": {
+    "fotografia_esportiva": "Dynamic motorsport photograph, dramatic light, motion blur, shallow depth of field, cinematic contrast, realistic details",
+    "ilustracao_grafica": "Bold flat graphic illustration, clean vector shapes, speed lines, high contrast, limited palette",
+    "render_3d": "Clean 3D render, studio lighting, glossy materials, minimal dark background"
+  },
+  "restricoes_visuais_en": "Absolutely no text, letters, numbers, race numbers, words, signage, readable screens, logos, brand marks, sponsor decals, team liveries, national flags or watermarks. No real people: no real drivers, team principals or celebrities. Any driver must be anonymous: helmet on with the visor closed, plain helmet and plain race suit, no visible face. Cars must be generic, unbranded open-wheel race cars in plain colors.",
+  "diretrizes_de_cena": [
+    "A cena precisa funcionar sem nenhum texto: nada de números de carro, letreiros, placas, telas com texto, logotipos ou adesivos de patrocinadores.",
+    "Carros de corrida em ação são bem-vindos: na pista, na largada, no pit stop, na chuva, à noite, com faíscas e velocidade. Sempre genéricos, com pintura lisa e sem marcas de equipes reais.",
+    "Pilotos só anônimos: de capacete com a viseira fechada, capacete e macacão lisos, sem rosto visível. Nunca retrate um piloto, chefe de equipe ou qualquer pessoa real; para mostrar um piloto de verdade, a peça usa foto real.",
+    "A metade de baixo da imagem recebe um painel de texto. Coloque o assunto principal na metade de cima."
+  ]
 }

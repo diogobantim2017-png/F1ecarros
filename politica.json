@@ -1,69 +1,68 @@
 {
-  "versao": "2026-09-29.1",
-  "observacao": "Política de referência para um perfil de educação financeira. Conteúdo educativo não pode virar recomendação de investimento. Revise termos e limites com um especialista antes de publicar em conta real.",
+  "versao": "2026-09-30.2",
+  "observacao": "Política do perfil de automobilismo Pneu Macio. Notícia só sai com fonte recente conferida na busca na web; resultados, números e declarações só podem vir dos fatos das fontes.",
   "categorias": {
-    "educacao_financeira": {
-      "nome": "Primeiros passos: orçamento e reserva",
-      "risco": "baixo",
-      "autonomia_maxima": "auto"
-    },
-    "dividas_credito": {
-      "nome": "Dívidas, cartão e crédito",
-      "risco": "baixo",
-      "autonomia_maxima": "auto"
-    },
-    "como_investir": {
-      "nome": "Como funcionam os investimentos",
+    "noticia": {
+      "nome": "Notícia do dia",
       "risco": "medio",
-      "autonomia_maxima": "humano"
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
     },
-    "seguranca_golpes": {
-      "nome": "Golpes e falsas promessas",
+    "fim_de_semana": {
+      "nome": "Fim de semana de corrida",
+      "risco": "medio",
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
+    },
+    "brasileiros": {
+      "nome": "Brasileiros no automobilismo",
+      "risco": "medio",
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
+    },
+    "explicando": {
+      "nome": "Explicando o esporte",
       "risco": "baixo",
       "autonomia_maxima": "auto"
     },
-    "data_comemorativa": {
-      "nome": "Data comemorativa",
+    "historia": {
+      "nome": "Curiosidades e história",
+      "risco": "baixo",
+      "autonomia_maxima": "auto"
+    },
+    "engajamento": {
+      "nome": "Enquete e debate",
       "risco": "baixo",
       "autonomia_maxima": "auto"
     }
   },
   "termos_proibidos": [
-    "garantido",
-    "garantida",
-    "sem risco",
-    "risco zero",
-    "sem consulta",
-    "sem análise",
-    "aprovação imediata",
-    "aprovação garantida",
-    "dinheiro fácil",
-    "fique rico",
-    "lucro certo",
-    "rendimento garantido",
-    "enriquecer rápido",
-    "ficar rico rápido",
-    "oportunidade única",
-    "imperdível",
-    "melhor investimento",
-    "invista agora"
+    "aposte",
+    "apostar",
+    "apostas",
+    "palpite certeiro",
+    "odds",
+    "cassino",
+    "bônus de cadastro",
+    "urgente",
+    "bomba",
+    "exclusivo",
+    "chocante",
+    "você não vai acreditar"
   ],
   "concorrentes": [
-    "Itaú",
-    "Bradesco",
-    "Santander",
-    "Banco do Brasil",
-    "Caixa Econômica",
-    "Nubank",
-    "Banco Inter",
-    "C6 Bank",
-    "PicPay",
-    "Mercado Pago",
-    "XP Investimentos",
-    "BTG Pactual",
-    "Rico Investimentos",
-    "NuInvest",
-    "Binance"
+    "Bet365",
+    "Betano",
+    "Sportingbet",
+    "Stake",
+    "KTO",
+    "Superbet",
+    "EstrelaBet",
+    "Blaze",
+    "Pixbet",
+    "Esportes da Sorte",
+    "Novibet",
+    "Betfair"
   ],
   "padroes_estilo_ia": [
     {
@@ -93,7 +92,8 @@
     "nota_minima_item": 6,
     "riscos_aceitos_para_auto": [
       "baixo"
-    ]
+    ],
+    "risco_alto_quando": "o post afirma resultado, classificação, número, data ou declaração sem base nos fatos confirmados, trata boato como fato, incentiva apostas, ofende piloto, equipe ou torcida, explora acidente ou tragédia de forma sensacionalista, usa imagem que imita piloto real ou pintura de equipe, ou tem leitura enganosa."
   },
   "visao": {
     "texto_no_fundo": "bloqueio",
@@ -110,7 +110,67 @@
     "amostragem_auditoria": 0.1
   },
   "segmentacao": {
-    "credito_bloqueia_vulneraveis": true
+    "credito_bloqueia_vulneraveis": false
   },
-  "rotulo_ia": "Imagem ilustrativa criada com IA."
+  "rotulo_ia": "Imagem ilustrativa criada com IA.",
+  "travas": {
+    "numeros_financeiros": false,
+    "rotulo_marcas": "Sem citar casas de apostas"
+  },
+  "regras_de_redacao": [
+    "Resultados, posições, tempos, pontos, datas, nomes e declarações só podem vir dos fatos confirmados nas fontes. Nunca invente.",
+    "Rumor é rumor: diga que é especulação e quem publicou. Não trate como fato.",
+    "Não incentive apostas nem cite casas de apostas.",
+    "Não ofenda pilotos, equipes ou torcidas. Provocação só de brincadeira e com respeito.",
+    "Em acidentes, fale com respeito e sem sensacionalismo. Nunca especule sobre a saúde de alguém.",
+    "Em posts de engajamento, termine com uma pergunta clara para o seguidor responder nos comentários."
+  ],
+  "radar": {
+    "busca_web": true,
+    "max_buscas": 5,
+    "dominios_confiaveis": [
+      "formula1.com",
+      "fia.com",
+      "motorsport.com",
+      "autosport.com",
+      "the-race.com",
+      "racefans.net",
+      "planetf1.com",
+      "ge.globo.com",
+      "grandepremio.com.br",
+      "f1mania.net",
+      "uol.com.br",
+      "espn.com.br",
+      "terra.com.br",
+      "cnnbrasil.com.br",
+      "reuters.com",
+      "apnews.com",
+      "bbc.com",
+      "skysports.com",
+      "indycar.com",
+      "fiawec.com",
+      "stockcar.com.br"
+    ],
+    "criterios": [
+      "Notícias quentes: o que aconteceu ou foi anunciado nas últimas 48 horas no automobilismo, com foco na Fórmula 1.",
+      "Fim de semana de corrida: antes, durante e depois de treinos, classificação e corrida.",
+      "Brasileiros no automobilismo mundial.",
+      "Variedade: alterne notícias com posts de explicação, história e engajamento, e evite repetir tema ou categoria das últimas peças."
+    ]
+  },
+  "noticias": {
+    "max_dias": 3
+  },
+  "fotos": {
+    "provedores": [
+      "wikimedia",
+      "pexels"
+    ],
+    "orientacao_busca": "para foto real de um piloto, carro, equipe ou circuito específico, use o nome exato como aparece na Wikipédia, com o ano quando ajudar (ex.: \"Gabriel Bortoleto 2025\", \"Interlagos circuit\"). Para cena genérica, use palavras simples de banco de imagens (ex.: \"racing car pit stop\")."
+  },
+  "visao_foto_editorial": {
+    "pessoa_publica": "alerta",
+    "logos_ou_marcas": "alerta",
+    "texto_no_fundo": "alerta"
+  }
 }
