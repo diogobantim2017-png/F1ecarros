@@ -156,6 +156,14 @@ function validarSchema(schema, valor, caminho = 'raiz') {
 const chamadas = [];
 async function iaSimulada({ ferramenta, conteudo, sistema, ferramentasServidor = [] }) {
   chamadas.push({ ferramenta: ferramenta.name, schema: ferramenta.input_schema, conteudo, sistema, servidor: ferramentasServidor });
+  if (ferramenta.name === 'propor_oportunidade' && roteiro.recusarSites) {
+    const lista = roteiro.recusarSites;
+    roteiro.recusarSites = null;
+    throw Object.assign(
+      new Error(`400 {"type":"error","error":{"type":"invalid_request_error","message":"The following domains are not accessible to our user agent: ['${lista.join("', '")}']."}}`),
+      { status: 400 },
+    );
+  }
   const respostas = {
     propor_oportunidade: () => ({ ...OPORTUNIDADE, ...roteiro.oportunidade }),
     criar_brief: () => ({ ...BRIEF, ...roteiro.brief }),
@@ -782,6 +790,15 @@ await caso('Notícia com busca na web: fonte conferida, trava de fonte, fatos no
     const velha = await gerarPeca({ orientacao: { categoria: 'noticia' } });
     assert.equal(velha.governanca.gate.veredito, 'bloqueada');
     assert.match(velha.governanca.regras.find((r) => r.id === 'fonte_da_noticia').detalhe, /mais de 3 dias/);
+
+    // Site que bloqueia a busca da Anthropic: sai da lista e a busca é refeita, sem parar a geração.
+    politica.radar.dominios_confiaveis = ['motorsport.com', 'bbc.com', 'reuters.com'];
+    roteiro = { ...roteiro, recusarSites: ['bbc.com', 'reuters.com'], oportunidade: { ...roteiro.oportunidade, fontes: [fonte('https://www.motorsport.com/f1/news/x/')] } };
+    const refeita = await gerarPeca({ orientacao: { categoria: 'noticia' } });
+    const tentativas = chamadas.filter((c) => c.ferramenta === 'propor_oportunidade').slice(-2);
+    assert.deepEqual(tentativas[0].servidor[0].allowed_domains, ['motorsport.com', 'bbc.com', 'reuters.com']);
+    assert.deepEqual(tentativas[1].servidor[0].allowed_domains, ['motorsport.com'], 'refaz a busca sem os sites que bloquearam');
+    assert.equal(refeita.status, 'em_revisao');
   } finally {
     roteiro = {};
     Object.assign(politica, guardado);

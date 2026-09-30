@@ -39,6 +39,15 @@ export function verificarFontes(fontes = [], buscas = []) {
     }));
 }
 
+/** Sites que recusaram a busca da Anthropic nesta execução: saem da lista de domínios. */
+const dominiosSemAcesso = new Set();
+
+/** Lê a recusa da API ("domains are not accessible to our user agent: [...]") e devolve os sites da lista. */
+function dominiosRecusados(erro) {
+  const achado = /not accessible to our user agent:\s*\[([^\]]*)\]/i.exec(String(erro?.message || ''));
+  return achado ? achado[1].split(',').map((d) => d.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean) : [];
+}
+
 /** Ferramenta de busca na web executada pela própria API da Anthropic. */
 function ferramentaDeBusca() {
   const busca = {
@@ -47,7 +56,8 @@ function ferramentaDeBusca() {
     max_uses: politica.radar?.max_buscas || 5,
     user_location: { type: 'approximate', country: 'BR', timezone: env.fuso },
   };
-  if (politica.radar?.dominios_confiaveis?.length) busca.allowed_domains = politica.radar.dominios_confiaveis;
+  const dominios = (politica.radar?.dominios_confiaveis || []).filter((d) => !dominiosSemAcesso.has(d));
+  if (dominios.length) busca.allowed_domains = dominios;
   return busca;
 }
 
@@ -166,14 +176,25 @@ Orientação da equipe: ${orientacao?.texto?.trim() || 'nenhuma'}${orientacao?.c
       : ''
   }`;
 
-  const r = await ia({
-    modelo: env.modeloIa,
-    sistema,
-    conteudo,
-    ferramenta,
-    maxTokens: buscaWeb ? 3000 : 1200,
-    ferramentasServidor: buscaWeb ? [ferramentaDeBusca()] : [],
-  });
+  const chamar = () =>
+    ia({
+      modelo: env.modeloIa,
+      sistema,
+      conteudo,
+      ferramenta,
+      maxTokens: buscaWeb ? 3000 : 1200,
+      ferramentasServidor: buscaWeb ? [ferramentaDeBusca()] : [],
+    });
+  let r;
+  try {
+    r = await chamar();
+  } catch (erro) {
+    // Alguns sites bloqueiam a busca da Anthropic e a API recusa a lista inteira: tira esses sites e tenta de novo.
+    const recusados = buscaWeb ? dominiosRecusados(erro) : [];
+    if (!recusados.length) throw erro;
+    recusados.forEach((d) => dominiosSemAcesso.add(d));
+    r = await chamar();
+  }
   const dados = { ...r.dados };
   if (orientacao?.categoria) dados.categoria = orientacao.categoria;
   if (!politica.categorias[dados.categoria]?.exige_oferta) dados.oferta_id = '';
@@ -182,7 +203,7 @@ Orientação da equipe: ${orientacao?.texto?.trim() || 'nenhuma'}${orientacao?.c
   return {
     dados,
     modelo: r.modelo,
-    contexto: { eventos, categorias: categorias.map((c) => c.id), buscas: (r.buscas || []).length },
+    contexto: { eventos, categorias: categorias.map((c) => c.id), buscas: (r.buscas || []).length, sites_sem_acesso: [...dominiosSemAcesso] },
   };
 }
 

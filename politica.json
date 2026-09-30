@@ -1,5 +1,5 @@
 {
-  "versao": "2026-09-30.2",
+  "versao": "2026-09-30.3",
   "observacao": "Política do perfil de automobilismo Pneu Macio. Notícia só sai com fonte recente conferida na busca na web; resultados, números e declarações só podem vir dos fatos das fontes.",
   "categorias": {
     "noticia": {
@@ -139,13 +139,9 @@
       "ge.globo.com",
       "grandepremio.com.br",
       "f1mania.net",
-      "uol.com.br",
       "espn.com.br",
       "terra.com.br",
       "cnnbrasil.com.br",
-      "reuters.com",
-      "apnews.com",
-      "bbc.com",
       "skysports.com",
       "indycar.com",
       "fiawec.com",
