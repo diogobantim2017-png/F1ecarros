@@ -131,7 +131,7 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
     const visual = visualDaPeca(peca);
     const credito = peca.imagem?.credito || null;
     const semente = peca.design_semente || 1;
-    const design = normalizarDesign({ ...marca.design_padrao, ...peca.design });
+    const design = normalizarDesign(peca.design);
     if (formato === 'post') {
       const r = await renderizarArte({ fundo, textos, oferta, visual, credito, semente, design });
       const salvo = await db.salvarMidia(`${id}-arte-${versao}.jpg`, r.buffer, 'image/jpeg');
@@ -228,7 +228,6 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
       arte: peca.arte,
       hoje: hoje(),
       modoPublicacao: canal.modo,
-      oportunidade: peca.oportunidade,
     });
     const apontamentos = regras.filter((r) => !r.ok).length;
     await auditar(id, 'regras', 'regras', `${regras.length - apontamentos} de ${regras.length} travas sem apontamento`, regras);
@@ -310,17 +309,7 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
       const oferta = oportunidade.oferta_id ? ofertaPorId(oportunidade.oferta_id) : null;
       etapa = 'brief';
       await db.atualizarPeca(id, { etapa, categoria: oportunidade.categoria, oportunidade, oferta_id: oportunidade.oferta_id || null });
-      await auditar(
-        id,
-        'radar',
-        'ia:radar',
-        `${oportunidade.tema}${
-          oportunidade.fontes?.length
-            ? ` (${oportunidade.fontes.filter((f) => f.verificada).length} de ${oportunidade.fontes.length} fontes conferidas na busca)`
-            : ''
-        }`,
-        { oportunidade, sinais: rRadar.contexto, modelo: rRadar.modelo },
-      );
+      await auditar(id, 'radar', 'ia:radar', oportunidade.tema, { oportunidade, sinais: rRadar.contexto, modelo: rRadar.modelo });
 
       const escolha = await db.obterPeca(id);
       const formato = formatoDaPeca(escolha);
@@ -366,7 +355,6 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
       arte: peca.arte,
       hoje: hoje(),
       modoPublicacao: canal.modo,
-      oportunidade: peca.oportunidade,
     });
     const bloqueios = regras.filter((r) => !r.ok && r.severidade === 'bloqueio');
     if (bloqueios.length) {
@@ -386,7 +374,7 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
     }
 
     const oferta = peca.oferta_id ? ofertaPorId(peca.oferta_id) : null;
-    const legenda = montarLegendaFinal({ textos: peca.textos, oferta, visual: visualDaPeca(peca), credito: peca.imagem?.credito, fontes: peca.oportunidade?.fontes });
+    const legenda = montarLegendaFinal({ textos: peca.textos, oferta, visual: visualDaPeca(peca), credito: peca.imagem?.credito });
     try {
       const r = await canal.publicar({ urlImagem: peca.arte.url, urlsImagens: peca.slides_arte?.map((sl) => sl.url) || null, legenda });
       const publicacao = { ...r, canal: canal.nome, em: instante(), legenda_final: legenda, ator };
@@ -762,7 +750,7 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
         if (direcao) {
           // Um agente lê o pedido e o transforma em ajustes: layout, nova cena ou nova busca de foto.
           await db.atualizarPeca(id, { etapa: 'ajuste' });
-          const designAtual = normalizarDesign({ ...marca.design_padrao, ...peca.design });
+          const designAtual = normalizarDesign(peca.design);
           const r = await interpretarAjusteVisual({ ia, peca, direcao, designAtual });
           const ajuste = r.dados;
           mudancas.design = normalizarDesign(ajuste.design);
@@ -857,7 +845,7 @@ export function criarMotor({ db, ia, imagem, fotos = null, canal, sortear = Math
         legenda_final:
           peca.publicacao?.legenda_final ||
           (peca.textos?.legenda
-            ? montarLegendaFinal({ textos: peca.textos, oferta, visual: visualDaPeca(peca), credito: peca.imagem?.credito, fontes: peca.oportunidade?.fontes })
+            ? montarLegendaFinal({ textos: peca.textos, oferta, visual: visualDaPeca(peca), credito: peca.imagem?.credito })
             : null),
         processando: ocupadas.has(id) || emGeracao === id,
         sugestao_agendamento: ['em_revisao', 'aprovada', 'agendada'].includes(peca.status) ? await horarioSugerido(peca).catch(() => null) : null,

@@ -16,48 +16,6 @@ function linhas(itens, formatar) {
 
 /* ------------------------------------------------------------------ radar */
 
-const semProtocolo = (url = '') =>
-  String(url)
-    .trim()
-    .toLowerCase()
-    .replace(/^https?:\/\//, '')
-    .replace(/^www\./, '')
-    .replace(/[?#].*$/, '')
-    .replace(/\/+$/, '');
-
-/** Marca como verificada cada fonte cujo endereço apareceu de fato nos resultados da busca na web. */
-export function verificarFontes(fontes = [], buscas = []) {
-  const achados = new Set(buscas.map((b) => semProtocolo(b.url)));
-  return (fontes || [])
-    .filter((f) => f?.url)
-    .map((f) => ({
-      url: String(f.url).trim(),
-      veiculo: String(f.veiculo || '').trim(),
-      titulo: String(f.titulo || '').trim(),
-      data_publicacao: String(f.data_publicacao || '').trim(),
-      verificada: achados.has(semProtocolo(f.url)),
-    }));
-}
-
-/** Ferramenta de busca na web executada pela própria API da Anthropic. */
-function ferramentaDeBusca() {
-  const busca = {
-    type: 'web_search_20250305',
-    name: 'web_search',
-    max_uses: politica.radar?.max_buscas || 5,
-    user_location: { type: 'approximate', country: 'BR', timezone: env.fuso },
-  };
-  if (politica.radar?.dominios_confiaveis?.length) busca.allowed_domains = politica.radar.dominios_confiaveis;
-  return busca;
-}
-
-const CRITERIOS_PADRAO = [
-  'Proteger o seguidor: em períodos de compras, festas, viagens e impostos, os golpes costumam aumentar.',
-  'Datas próximas do calendário, com antecedência suficiente para o conteúdo ser útil.',
-  'Objetivos do perfil. Com público iniciante, prefira temas que ensinam a base antes dos avançados.',
-  'Variedade: evite repetir o tema ou a categoria que dominaram as últimas peças.',
-];
-
 export async function radar({ ia, hoje, historico, orientacao }) {
   const categorias = categoriasDisponiveis(hoje);
   const ativas = ofertasDisponiveis(hoje);
@@ -80,7 +38,7 @@ export async function radar({ ia, hoje, historico, orientacao }) {
         categoria: { type: 'string', enum: categorias.map((c) => c.id) },
         gatilho: {
           type: 'string',
-          enum: ['noticia_recente', 'data_do_calendario', 'objetivo_do_perfil', 'lacuna_no_historico', 'orientacao_da_equipe'],
+          enum: ['data_do_calendario', 'objetivo_do_perfil', 'lacuna_no_historico', 'orientacao_da_equipe'],
         },
         sinal: {
           type: 'string',
@@ -96,52 +54,20 @@ export async function radar({ ia, hoje, historico, orientacao }) {
           enum: ['', ...ativas.map((o) => o.id)],
           description: 'Id da oferta do catálogo. Obrigatório só em categorias de oferta; vazio nos demais casos.',
         },
-        fontes: {
-          type: 'array',
-          maxItems: 5,
-          description: 'Páginas encontradas na busca que sustentam o tema. Obrigatório em categorias que exigem fonte.',
-          items: {
-            type: 'object',
-            properties: {
-              url: { type: 'string', description: 'Endereço exato da página, como veio na busca.' },
-              veiculo: { type: 'string', description: 'Nome do site ou veículo.' },
-              titulo: { type: 'string' },
-              data_publicacao: { type: 'string', description: 'Data de publicação, no formato AAAA-MM-DD.' },
-            },
-            required: ['url', 'veiculo', 'titulo', 'data_publicacao'],
-          },
-        },
-        fatos: {
-          type: 'array',
-          maxItems: 8,
-          items: { type: 'string' },
-          description: 'Fatos confirmados nas fontes, em frases curtas, com nomes, números e datas exatamente como aparecem nelas.',
-        },
       },
       required: ['tema', 'categoria', 'gatilho', 'sinal', 'justificativa', 'urgencia', 'oferta_id'],
     },
   };
 
-  const buscaWeb = politica.radar?.busca_web === true;
-  const maxDias = politica.noticias?.max_dias || 3;
-  const comFonte = categorias.filter((c) => politica.categorias[c.id]?.exige_fonte).map((c) => c.id);
-  const criterios = politica.radar?.criterios?.length ? politica.radar.criterios : CRITERIOS_PADRAO;
-  const regrasDeBusca = buscaWeb
-    ? `Busca na web:
-- Pesquise antes de escolher o tema. Priorize o que aconteceu ou foi anunciado nos últimos ${maxDias} dias.
-- Em categorias que exigem fonte (${comFonte.join(', ') || 'nenhuma'}), preencha fontes com o endereço exato da página, o veículo, o título e a data, e fatos com o que as fontes confirmam. Sem fonte recente, escolha outra categoria.
-- Use só o que as fontes dizem. Rumor é rumor: diga quem publicou e não trate como fato.
-- Prefira veículos reconhecidos. Não use sites de apostas como fonte.`
-    : 'Não invente números, notícias, pesquisas ou tendências que não estejam nos sinais.';
-  const sistema = `Você é o radar de conteúdo do perfil ${marca.nome}.
-Perfil: ${marca.descricao}
-Sua função é perceber qual necessidade de comunicação é mais relevante agora${buscaWeb ? ', usando os sinais fornecidos e a busca na web' : ', usando apenas os sinais fornecidos'}.
+  const sistema = `Você é o radar de conteúdo do perfil de educação financeira ${marca.nome}.\nPerfil: ${marca.descricao}\nSua função é perceber qual necessidade de comunicação é mais relevante agora, usando apenas os sinais fornecidos.
 
 Critérios, nesta ordem:
-${criterios.map((c, i) => `${i + 1}. ${c}`).join('\n')}
+1. Proteger o seguidor: em períodos de compras, festas, viagens e impostos, os golpes costumam aumentar.
+2. Datas próximas do calendário, com antecedência suficiente para o conteúdo ser útil.
+3. Objetivos do perfil. Com público iniciante, prefira temas que ensinam a base antes dos avançados.
+4. Variedade: evite repetir o tema ou a categoria que dominaram as últimas peças.
 
-${regrasDeBusca}
-Quando a equipe der uma orientação, ela tem prioridade.`;
+Não invente números, notícias, pesquisas ou tendências que não estejam nos sinais. Quando a equipe der uma orientação, ela tem prioridade.`;
 
   const conteudo = `Hoje: ${hoje} (fuso ${env.fuso})
 
@@ -152,7 +78,7 @@ Objetivos do perfil:
 ${linhas(marca.objetivos_de_negocio || [], (o) => o)}
 
 Categorias disponíveis:
-${linhas(categorias, (c) => `${c.id}: ${c.nome} (risco ${c.risco}${politica.categorias[c.id]?.exige_fonte ? ', exige fonte recente' : ''})`)}
+${linhas(categorias, (c) => `${c.id}: ${c.nome} (risco ${c.risco})`)}
 
 Ofertas ativas no catálogo:
 ${linhas(ativas, (o) => `${o.id}: ${o.produto} (${o.tipo})`)}
@@ -166,24 +92,11 @@ Orientação da equipe: ${orientacao?.texto?.trim() || 'nenhuma'}${orientacao?.c
       : ''
   }`;
 
-  const r = await ia({
-    modelo: env.modeloIa,
-    sistema,
-    conteudo,
-    ferramenta,
-    maxTokens: buscaWeb ? 3000 : 1200,
-    ferramentasServidor: buscaWeb ? [ferramentaDeBusca()] : [],
-  });
+  const r = await ia({ modelo: env.modeloIa, sistema, conteudo, ferramenta, maxTokens: 1200 });
   const dados = { ...r.dados };
   if (orientacao?.categoria) dados.categoria = orientacao.categoria;
   if (!politica.categorias[dados.categoria]?.exige_oferta) dados.oferta_id = '';
-  dados.fontes = verificarFontes(dados.fontes, r.buscas || []);
-  dados.fatos = (dados.fatos || []).map((f) => String(f).trim()).filter(Boolean);
-  return {
-    dados,
-    modelo: r.modelo,
-    contexto: { eventos, categorias: categorias.map((c) => c.id), buscas: (r.buscas || []).length },
-  };
+  return { dados, modelo: r.modelo, contexto: { eventos, categorias: categorias.map((c) => c.id) } };
 }
 
 /* ------------------------------------------------------------------ brief */
@@ -245,15 +158,8 @@ Valores: ${(marca.valores || []).join(', ')}
 
 Regras:
 - Escolha exatamente um segmento da lista.
-${(marca.diretrizes_de_cena?.length
-    ? marca.diretrizes_de_cena
-    : [
-        'A cena precisa funcionar sem nenhum texto: nada de letreiros, telas com texto legível, documentos, logotipos, cédulas, moedas ou cartões.',
-        'Use pessoas e lugares brasileiros reais, com diversidade e sem estereótipos. Prefira cenas simples, com um foco claro.',
-      ]
-  )
-    .map((d) => `- ${d}`)
-    .join('\n')}
+- A cena precisa funcionar sem nenhum texto: nada de letreiros, telas com texto legível, documentos, logotipos, cédulas, moedas ou cartões.
+- Use pessoas e lugares brasileiros reais, com diversidade e sem estereótipos. Prefira cenas simples, com um foco claro.
 - A metade de baixo da imagem recebe um painel de texto. Coloque o assunto principal na metade de cima.
 - Em prompt_imagem_en, descreva só a cena. O sistema acrescenta estilo, paleta e restrições.
 - Em busca_foto_en, use palavras simples de banco de imagens (ex.: "young woman budget notebook"), sem marcas e sem texto.`;
@@ -263,7 +169,7 @@ ${(marca.diretrizes_de_cena?.length
 - Categoria: ${politica.categorias[oportunidade.categoria].nome}
 - Sinal: ${oportunidade.sinal}
 - Justificativa: ${oportunidade.justificativa}
-${oportunidade.fatos?.length ? `- Fatos confirmados nas fontes:\n${oportunidade.fatos.map((f) => `  - ${f}`).join('\n')}\n` : ''}${oferta ? `- Produto em oferta: ${oferta.produto} (números e texto legal entram pelo template, não pelo brief)\n` : ''}
+${oferta ? `- Produto em oferta: ${oferta.produto} (números e texto legal entram pelo template, não pelo brief)\n` : ''}
 Segmentos permitidos:
 ${linhas(permitidos, (s) => `${s.id}: ${s.nome}. ${s.descricao}`)}
 
@@ -372,17 +278,10 @@ ${regrasDoFormato}
 
 Regras verificadas automaticamente. Se você descumprir, a peça é bloqueada:
 - Título até ${l.titulo_max} caracteres, subtítulo até ${l.subtitulo_max}, chamada da arte até ${l.cta_max}, legenda até ${l.legenda_max}, no máximo ${l.hashtags_max} hashtags.
-${(politica.regras_de_redacao?.length
-    ? politica.regras_de_redacao
-    : [
-        'Não escreva percentuais, valores em reais, taxas, prazos de pagamento ou rendimentos. Quando há oferta, o sistema insere os dados oficiais e o texto legal.',
-        'Não prometa ganho, retorno ou ausência de risco. Não cite bancos, corretoras, plataformas ou marcas.',
-        'Explique, não recomende: nunca diga qual produto comprar, quanto colocar em cada coisa nem qual é a hora certa de investir.',
-      ]
-  )
-    .map((r) => `- ${r}`)
-    .join('\n')}
+- Não escreva percentuais, valores em reais, taxas, prazos de pagamento ou rendimentos. Quando há oferta, o sistema insere os dados oficiais e o texto legal.
 - Não use estes termos: ${politica.termos_proibidos.join(', ')}.
+- Não prometa ganho, retorno ou ausência de risco. Não cite bancos, corretoras, plataformas ou marcas.
+- Explique, não recomende: nunca diga qual produto comprar, quanto colocar em cada coisa nem qual é a hora certa de investir.
 - Evite construções típicas de texto gerado por IA: "não é só X, é Y", "mais do que um X", travessões, perguntas retóricas em sequência e trios de adjetivos.
 - A legenda termina com a chamada para ação. Sem hashtags no corpo da legenda.
 - Hashtags sem espaços, começando com #.`;
@@ -411,13 +310,7 @@ Revisão: a equipe leu a peça e pediu ajustes nos textos.
 - Insight: ${brief.insight}
 - Mensagem-chave: ${brief.mensagem_chave}
 - Chamada para ação: ${brief.cta}
-${
-    oportunidade.fatos?.length
-      ? `- Fatos confirmados nas fontes. Resultados, números, nomes e declarações só podem vir daqui:\n${oportunidade.fatos
-          .map((f) => `  - ${f}`)
-          .join('\n')}\n- Fontes: ${[...new Set((oportunidade.fontes || []).map((f) => f.veiculo).filter(Boolean))].join(', ')}\n`
-      : ''
-  }${oferta ? `- Produto em oferta: ${oferta.produto}. Não escreva números: o destaque oficial e o texto legal entram pelo template.\n` : ''}`;
+${oferta ? `- Produto em oferta: ${oferta.produto}. Não escreva números: o destaque oficial e o texto legal entram pelo template.\n` : ''}`;
 
   if (pedido) {
     conteudo += `\nTextos atuais:\n${textosNumerados(textosAtuais || {}, numSlides)}\n\nPedido da equipe: "${pedido}"`;
@@ -452,11 +345,9 @@ export function montarPromptImagem(brief) {
 }
 
 /** Legenda final: texto da IA + texto legal oficial + rótulo de IA (só com imagem de IA) + crédito da foto + hashtags. */
-export function montarLegendaFinal({ textos, oferta, visual = 'ia', credito = null, fontes = [] }) {
+export function montarLegendaFinal({ textos, oferta, visual = 'ia', credito = null }) {
   const partes = [textos.legenda.trim()];
   if (oferta?.texto_legal) partes.push(oferta.texto_legal.trim());
-  const veiculos = [...new Set((fontes || []).filter((f) => f.verificada).map((f) => f.veiculo).filter(Boolean))];
-  if (veiculos.length) partes.push(`Fonte: ${veiculos.join(', ')}`);
   if (visual === 'ia' && politica.rotulo_ia) partes.push(politica.rotulo_ia);
   if (visual === 'foto' && credito?.autor) partes.push(`Foto: ${credito.autor} / ${credito.fonte || 'Pexels'}`);
   if (textos.hashtags?.length) partes.push(textos.hashtags.join(' '));

@@ -1,6 +1,6 @@
 # Motor de campanhas com IA e autonomia governada
 
-> **Configuração atual:** Pneu Macio, perfil de automobilismo com foco na Fórmula 1. Ele publica notícias reais e atuais, sempre com fonte, além de posts de explicação, história e engajamento. Nome, cores, fontes e tom de voz ficam em `marca.json`, e o logo em `logo.png`. O radar pesquisa na web antes de cada peça. Uma notícia só sai com fonte recente conferida na busca. O funcionamento descrito abaixo vale para qualquer perfil: onde o texto fala em banco, leia "perfil".
+> **Configuração atual:** perfil de educação financeira para jovens que ainda não sabem investir, com a marca "Papo de Grana" (nome, cores e tom em `marca.json`, logo em `logo.png`). O catálogo de ofertas está desligado e a categoria "Como funcionam os investimentos" é sempre revisada por uma pessoa. O funcionamento descrito abaixo vale para qualquer marca: onde o texto fala em banco, leia "perfil".
 
 MVP de um motor que percebe a necessidade de um post, define público e objetivo, escreve os textos, gera a imagem com IA, monta a arte no template da marca, passa a peça pelas travas de governança e então publica no Instagram ou manda para revisão humana.
 
@@ -47,7 +47,7 @@ npm run teste           # pipeline completo com IA simulada: sem chaves e sem cu
 npm start               # painel em http://localhost:3000
 ```
 
-O teste offline roda 25 cenários: pipeline completo, cada tipo de trava, aprovação, edição humana, novo visual e ajuste de texto com IA, escada de autonomia, limites diários, pausa, programação, formatos, notícias com fonte e busca na web. Ele usa um perfil fixo (`teste-perfil.json`) para verificar o motor da mesma forma em qualquer perfil, e confere se os arquivos do perfil ativo são válidos. Ele também grava uma prévia da arte em `teste-saida/previa-arte.jpg`, com fundo sintético.
+O teste offline roda 22 cenários: pipeline completo, cada tipo de trava, aprovação, edição humana, novo visual e ajuste de texto com IA, escada de autonomia, limites diários, pausa, programação e formatos. Ele também grava uma prévia da arte em `teste-saida/previa-arte.jpg`, com fundo sintético.
 
 **Painel sem chaves, para demonstração de layout:**
 
@@ -68,21 +68,6 @@ O painel abre com as peças do teste. Os fundos são sintéticos e o botão de g
 - **Pausar tudo.** Botão de emergência no topo. Enquanto estiver pausado, nada é publicado, nem com aprovação humana, e a agenda não gera peças. O motivo fica na auditoria.
 
 O campo "Seu nome" identifica quem aprovou, editou ou liberou cada coisa.
-
-## Notícias reais, com fonte
-
-Quando `politica.radar.busca_web` está ligado, o radar pesquisa na web antes de escolher o tema. A busca usa a ferramenta da própria API da Anthropic, com a mesma `ANTHROPIC_API_KEY`.
-
-1. **Busca.** O radar faz até `max_buscas` pesquisas e prioriza o que aconteceu nos últimos dias. Com `dominios_confiaveis` preenchido, ele só pesquisa nesses sites.
-2. **Fontes e fatos.** Ele registra as fontes (endereço, veículo, título e data) e os fatos confirmados nelas, em frases curtas.
-3. **Conferência.** O sistema confere se cada fonte citada apareceu de fato nos resultados da busca. A que não apareceu fica marcada como "não conferida".
-4. **Texto.** O redator e o revisor recebem os fatos. Resultados, números, nomes e declarações só podem vir deles. O revisor aponta risco alto quando o texto afirma algo que não está nos fatos.
-5. **Trava.** Nas categorias com `exige_fonte`, a peça é bloqueada sem pelo menos uma fonte conferida e recente, de até `noticias.max_dias` dias. A trava roda de novo no momento da publicação, então notícia velha não sai.
-6. **Legenda.** A legenda publicada termina com "Fonte:" e os veículos conferidos. No painel, cada peça mostra as fontes com link e os fatos confirmados.
-
-Cada busca custa 10 dólares a cada 1.000 pesquisas, segundo a tabela da Anthropic. Com `max_buscas` em 5, uma peça faz no máximo 5 buscas.
-
-**Imagens em perfil de esporte:** fotos oficiais de corrida têm direitos de agência e não entram no sistema. As regras visuais proíbem pilotos reais, pinturas de equipes, números de carro e logotipos de patrocinadores, e o revisor com visão bloqueia pessoa pública reconhecível e marca de terceiros. Para notícia, o formato mais seguro é "Só design".
 
 ## Formatos e imagens
 
@@ -106,23 +91,6 @@ Nos formatos com slides, o conteúdo principal fica nas imagens e a legenda comp
 - **Novo visual.** Sem pedido, gera outra imagem de IA, busca outra foto ou troca a composição do design. Com pedido ("fundo escuro", "tirar os números grandes", "uma jovem num parque"), um agente diretor de arte transforma o texto em ajustes concretos. Ele pode mexer no layout (formas, fundo claro ou escuro, números grandes, contador, pontinhos, tamanho do texto), escrever uma nova cena para a IA de imagem ou fazer uma nova busca de foto. Quando o pedido é só de layout, a imagem atual é mantida. O que for mudança de texto volta como aviso na trilha de auditoria, para a equipe editar nos campos.
 - Nos carrosséis, os números grandes decorativos só aparecem quando nenhum título tem numeração própria, para não confundir.
 - No Instagram, o carrossel conta como uma única publicação, com até 10 imagens.
-
-## Configurar o perfil
-
-Além dos campos abaixo, o perfil pode ajustar o sistema sem mexer no código:
-
-- **`marca.json`:**
-  - `diretrizes_de_cena`: regras para a cena da imagem.
-  - `design_padrao`: por exemplo, fundo escuro como padrão.
-  - `cores.fundo_claro`: a cor dos fundos claros.
-- **`politica.json`:**
-  - `regras_de_redacao`: regras que o redator segue.
-  - `travas.numeros_financeiros`: `false` desliga a trava de números, feita para perfis de finanças.
-  - `travas.rotulo_marcas`: o nome da trava de marcas proibidas.
-  - `juiz.risco_alto_quando`: o que conta como risco alto para o revisor.
-  - `radar`: busca na web, domínios confiáveis e critérios do radar.
-  - `noticias.max_dias`: quantos dias a fonte de uma notícia pode ter.
-  - `exige_fonte`: marca, em cada categoria, as que precisam de fonte.
 
 ## Configurar para um banco
 
@@ -156,9 +124,8 @@ Toda peça recebe um de três vereditos:
 | Textos obrigatórios preenchidos | Bloqueio |
 | Tamanhos dentro do limite | Alerta |
 | Sem termos proibidos | Bloqueio |
-| Sem taxas, valores ou rendimentos escritos pela IA (desligada neste perfil) | Bloqueio |
-| Sem citar bancos, corretoras ou marcas (neste perfil: casas de apostas) | Bloqueio |
-| Notícia com fonte recente conferida na busca (só nas categorias com `exige_fonte`) | Bloqueio |
+| Sem taxas, valores ou rendimentos escritos pela IA | Bloqueio |
+| Sem citar bancos, corretoras ou marcas | Bloqueio |
 | Sem vícios de texto gerado por IA | Alerta |
 | Segmento permitido para a categoria | Bloqueio |
 | Oferta vinculada ao catálogo oficial | Bloqueio |

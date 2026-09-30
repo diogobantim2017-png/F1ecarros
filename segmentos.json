@@ -1,29 +1,35 @@
 {
-  "observacao": "Públicos do perfil de automobilismo.",
+  "observacao": "Segmentos do público do perfil. Os marcados como vulneráveis nunca recebem oferta de crédito, caso o catálogo de ofertas volte a ser usado.",
   "segmentos": [
     {
       "id": "publico_geral",
-      "nome": "Fãs de automobilismo em geral",
-      "descricao": "Acompanham as corridas e querem as notícias principais de forma rápida.",
+      "nome": "Seguidores em geral",
+      "descricao": "Jovens de 18 a 30 anos que acompanham o perfil e ainda não investem ou estão começando agora.",
       "vulneravel": false
     },
     {
-      "id": "novatos",
-      "nome": "Começaram a acompanhar agora",
-      "descricao": "Chegaram pela série documental, pelas redes ou pelos brasileiros no grid. Ainda não conhecem todas as regras e termos.",
+      "id": "primeiro_salario",
+      "nome": "Primeiro salário ou estágio",
+      "descricao": "Começaram a ganhar o próprio dinheiro há pouco tempo e ainda não sabem para onde ele vai.",
       "vulneravel": false
     },
     {
-      "id": "fas_de_longa_data",
-      "nome": "Fãs de longa data",
-      "descricao": "Conhecem a história, gostam de estratégia, técnica e comparações entre épocas.",
+      "id": "estudantes",
+      "nome": "Estudantes",
+      "descricao": "Universitários e estudantes com renda pequena ou irregular, como bolsa, mesada ou trabalhos avulsos.",
       "vulneravel": false
     },
     {
-      "id": "torcida_brasileira",
-      "nome": "Torcida brasileira",
-      "descricao": "Acompanham de perto os pilotos brasileiros e querem saber como eles estão indo.",
+      "id": "querem_comecar",
+      "nome": "Querem começar a investir",
+      "descricao": "Já têm algum dinheiro guardado, geralmente parado na conta ou na poupança, e não sabem por onde começar.",
       "vulneravel": false
+    },
+    {
+      "id": "jovens_endividados",
+      "nome": "Jovens com dívidas",
+      "descricao": "Estão com cartão, cheque especial ou empréstimo atrasado. Precisam de orientação acolhedora, sem culpa e sem julgamento.",
+      "vulneravel": true
     }
   ]
 }

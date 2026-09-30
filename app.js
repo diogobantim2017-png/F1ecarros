@@ -26,7 +26,6 @@ const ETAPAS = [
 const NOME_ETAPA = { ...Object.fromEntries(ETAPAS), ajuste: 'Lendo o seu pedido' };
 
 const GATILHOS = {
-  noticia_recente: 'Notícia recente',
   data_do_calendario: 'Data do calendário',
   objetivo_do_perfil: 'Objetivo do perfil',
   objetivo_do_banco: 'Objetivo do perfil',
@@ -603,23 +602,8 @@ function porQue(d) {
       ['Justificativa', o.justificativa],
       ['Urgência', NIVEIS[o.urgencia] || o.urgencia],
       d.peca.orientacao?.texto ? ['Orientação da equipe', d.peca.orientacao.texto] : null,
-      o.fatos?.length ? ['Fatos confirmados', { html: `<ul class="lista-simples">${o.fatos.map((f) => `<li>${esc(f)}</li>`).join('')}</ul>` }] : null,
-      o.fontes?.length ? ['Fontes', { html: fontesHtml(o.fontes) }] : null,
     ]),
   );
-}
-
-/** Fontes da notícia, com link. As que não apareceram nos resultados da busca ficam marcadas. */
-function fontesHtml(fontes) {
-  return `<ul class="lista-simples">${fontes
-    .map((f) => {
-      const seguro = /^https?:\/\//i.test(f.url || '');
-      const nome = `${esc(f.veiculo || 'Fonte')}${f.titulo ? `: ${esc(f.titulo)}` : ''}`;
-      const data = f.data_publicacao ? ` (${esc(f.data_publicacao.split('-').reverse().join('/'))})` : '';
-      const link = seguro ? `<a href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">${nome}</a>` : nome;
-      return `<li>${link}${data}${f.verificada ? '' : ' <strong class="aviso-fonte">não conferida na busca</strong>'}</li>`;
-    })
-    .join('')}</ul>`;
 }
 
 function publico(d) {

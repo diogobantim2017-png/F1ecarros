@@ -227,9 +227,6 @@ export async function renderizarArte({ fundo, textos, oferta, visual = 'ia', cre
 
 /* ------------------------------------------------------ design sem imagem */
 
-/** Fundo claro da marca: a cor definida em marca.json ou um tom bem suave da cor de destaque. */
-const fundoClaro = (peso) => marca.cores.fundo_claro || misturar(marca.cores.secundaria, '#FFFFFF', peso);
-
 function hexParaRgb(hex) {
   const limpo = String(hex).replace('#', '');
   const cheio = limpo.length === 3 ? limpo.split('').map((c) => c + c).join('') : limpo;
@@ -261,7 +258,7 @@ function desenharFundoDesign(ctx, semente = 1, d = normalizarDesign()) {
   const r = sorteador(semente);
   const { primaria, secundaria } = marca.cores;
   const escuro = d.fundo === 'escuro';
-  ctx.fillStyle = escuro ? primaria : fundoClaro(0.78);
+  ctx.fillStyle = escuro ? primaria : misturar(secundaria, '#FFFFFF', 0.78);
   ctx.fillRect(0, 0, LARGURA, ALTURA);
   if (d.formas === 'nenhuma') return;
 
@@ -353,7 +350,7 @@ function paleta(escuro) {
   const { primaria, secundaria } = marca.cores;
   return escuro
     ? { fundo: primaria, texto: marca.cores.texto_sobre_primaria, destaque: secundaria, detalhe: secundaria }
-    : { fundo: fundoClaro(0.86), texto: primaria, destaque: secundaria, detalhe: primaria };
+    : { fundo: misturar(secundaria, '#FFFFFF', 0.86), texto: primaria, destaque: secundaria, detalhe: primaria };
 }
 
 async function slideConteudo({ titulo, texto, numero, total, design }) {
@@ -494,7 +491,7 @@ async function slideFinal({ fechamento, cta, legal, numero, total, design }) {
   // O slide final é escuro por padrão, para a chamada se destacar; com "tudo claro", segue o resto.
   const claro = d.fundo === 'claro';
   const corTexto = claro ? primaria : marca.cores.texto_sobre_primaria;
-  ctx.fillStyle = claro ? fundoClaro(0.86) : primaria;
+  ctx.fillStyle = claro ? misturar(secundaria, '#FFFFFF', 0.86) : primaria;
   ctx.fillRect(0, 0, LARGURA, ALTURA);
   if (d.formas !== 'nenhuma') {
     ctx.globalAlpha = 0.9;
