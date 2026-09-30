@@ -1,0 +1,29 @@
+{
+  "observacao": "Públicos do perfil de automobilismo.",
+  "segmentos": [
+    {
+      "id": "publico_geral",
+      "nome": "Fãs de automobilismo em geral",
+      "descricao": "Acompanham as corridas e querem as notícias principais de forma rápida.",
+      "vulneravel": false
+    },
+    {
+      "id": "novatos",
+      "nome": "Começaram a acompanhar agora",
+      "descricao": "Chegaram pela série documental, pelas redes ou pelos brasileiros no grid. Ainda não conhecem todas as regras e termos.",
+      "vulneravel": false
+    },
+    {
+      "id": "fas_de_longa_data",
+      "nome": "Fãs de longa data",
+      "descricao": "Conhecem a história, gostam de estratégia, técnica e comparações entre épocas.",
+      "vulneravel": false
+    },
+    {
+      "id": "torcida_brasileira",
+      "nome": "Torcida brasileira",
+      "descricao": "Acompanham de perto os pilotos brasileiros e querem saber como eles estão indo.",
+      "vulneravel": false
+    }
+  ]
+}

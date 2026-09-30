@@ -1,0 +1,164 @@
+{
+  "versao": "2026-09-30.1",
+  "observacao": "Política do perfil de automobilismo Pneu Macio. Notícia só sai com fonte recente conferida na busca na web; resultados, números e declarações só podem vir dos fatos das fontes.",
+  "categorias": {
+    "noticia": {
+      "nome": "Notícia do dia",
+      "risco": "medio",
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
+    },
+    "fim_de_semana": {
+      "nome": "Fim de semana de corrida",
+      "risco": "medio",
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
+    },
+    "brasileiros": {
+      "nome": "Brasileiros no automobilismo",
+      "risco": "medio",
+      "autonomia_maxima": "auto",
+      "exige_fonte": true
+    },
+    "explicando": {
+      "nome": "Explicando o esporte",
+      "risco": "baixo",
+      "autonomia_maxima": "auto"
+    },
+    "historia": {
+      "nome": "Curiosidades e história",
+      "risco": "baixo",
+      "autonomia_maxima": "auto"
+    },
+    "engajamento": {
+      "nome": "Enquete e debate",
+      "risco": "baixo",
+      "autonomia_maxima": "auto"
+    }
+  },
+  "termos_proibidos": [
+    "aposte",
+    "apostar",
+    "apostas",
+    "palpite certeiro",
+    "odds",
+    "cassino",
+    "bônus de cadastro",
+    "urgente",
+    "bomba",
+    "exclusivo",
+    "chocante",
+    "você não vai acreditar"
+  ],
+  "concorrentes": [
+    "Bet365",
+    "Betano",
+    "Sportingbet",
+    "Stake",
+    "KTO",
+    "Superbet",
+    "EstrelaBet",
+    "Blaze",
+    "Pixbet",
+    "Esportes da Sorte",
+    "Novibet",
+    "Betfair"
+  ],
+  "padroes_estilo_ia": [
+    {
+      "regex": "n[aã]o [ée] (s[oó]|apenas)\\b",
+      "descricao": "Construção \"não é só X, é Y\""
+    },
+    {
+      "regex": "mais do que (um|uma|apenas|s[oó])\\b",
+      "descricao": "Construção \"mais do que um X\""
+    },
+    {
+      "regex": "—",
+      "descricao": "Travessão, marca comum de texto gerado por IA"
+    }
+  ],
+  "limites": {
+    "titulo_max": 48,
+    "subtitulo_max": 110,
+    "cta_max": 24,
+    "legenda_max": 1200,
+    "hashtags_max": 5,
+    "geracoes_por_dia": null,
+    "publicacoes_por_dia": null
+  },
+  "juiz": {
+    "nota_minima_media": 8,
+    "nota_minima_item": 6,
+    "riscos_aceitos_para_auto": [
+      "baixo"
+    ],
+    "risco_alto_quando": "o post afirma resultado, classificação, número, data ou declaração sem base nos fatos confirmados, trata boato como fato, incentiva apostas, ofende piloto, equipe ou torcida, explora acidente ou tragédia de forma sensacionalista, usa imagem que imita piloto real ou pintura de equipe, ou tem leitura enganosa."
+  },
+  "visao": {
+    "texto_no_fundo": "bloqueio",
+    "logos_ou_marcas": "bloqueio",
+    "dinheiro_ou_cartao": "bloqueio",
+    "pessoas_deformadas": "bloqueio",
+    "conteudo_sensivel": "bloqueio",
+    "pessoa_publica": "bloqueio",
+    "criancas": "alerta"
+  },
+  "autonomia": {
+    "min_amostras": 20,
+    "meta_concordancia": 0.9,
+    "amostragem_auditoria": 0.1
+  },
+  "segmentacao": {
+    "credito_bloqueia_vulneraveis": false
+  },
+  "rotulo_ia": "Imagem ilustrativa criada com IA.",
+  "travas": {
+    "numeros_financeiros": false,
+    "rotulo_marcas": "Sem citar casas de apostas"
+  },
+  "regras_de_redacao": [
+    "Resultados, posições, tempos, pontos, datas, nomes e declarações só podem vir dos fatos confirmados nas fontes. Nunca invente.",
+    "Rumor é rumor: diga que é especulação e quem publicou. Não trate como fato.",
+    "Não incentive apostas nem cite casas de apostas.",
+    "Não ofenda pilotos, equipes ou torcidas. Provocação só de brincadeira e com respeito.",
+    "Em acidentes, fale com respeito e sem sensacionalismo. Nunca especule sobre a saúde de alguém.",
+    "Em posts de engajamento, termine com uma pergunta clara para o seguidor responder nos comentários."
+  ],
+  "radar": {
+    "busca_web": true,
+    "max_buscas": 5,
+    "dominios_confiaveis": [
+      "formula1.com",
+      "fia.com",
+      "motorsport.com",
+      "autosport.com",
+      "the-race.com",
+      "racefans.net",
+      "planetf1.com",
+      "ge.globo.com",
+      "grandepremio.com.br",
+      "f1mania.net",
+      "uol.com.br",
+      "espn.com.br",
+      "terra.com.br",
+      "cnnbrasil.com.br",
+      "reuters.com",
+      "apnews.com",
+      "bbc.com",
+      "skysports.com",
+      "indycar.com",
+      "fiawec.com",
+      "stockcar.com.br"
+    ],
+    "criterios": [
+      "Notícias quentes: o que aconteceu ou foi anunciado nas últimas 48 horas no automobilismo, com foco na Fórmula 1.",
+      "Fim de semana de corrida: antes, durante e depois de treinos, classificação e corrida.",
+      "Brasileiros no automobilismo mundial.",
+      "Variedade: alterne notícias com posts de explicação, história e engajamento, e evite repetir tema ou categoria das últimas peças."
+    ]
+  },
+  "noticias": {
+    "max_dias": 3
+  }
+}

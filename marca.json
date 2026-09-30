@@ -1,0 +1,46 @@
+{
+  "observacao": "Marca do perfil de automobilismo Pneu Macio. O logo da arte fica no arquivo logo.png.",
+  "nome": "Pneu Macio",
+  "descricao": "Perfil de automobilismo com foco na Fórmula 1: notícias do dia com fonte, resultados, bastidores explicados e posts para o fã conversar. Rápido como pneu macio, sem inventar nada.",
+  "tom_de_voz": "Fã que entende do assunto e fala com energia, sem exagero. Frases curtas e diretas. Explica o termo técnico na hora (undercut, DRS, parc fermé). Humor leve, sem provocar torcidas nem ofender pilotos. Notícia é notícia: tom factual, sem sensacionalismo. Trata o leitor por você.",
+  "valores": [
+    "precisão",
+    "paixão pelo esporte",
+    "respeito às torcidas"
+  ],
+  "objetivos_de_negocio": [
+    "Ser a fonte rápida e confiável das notícias do automobilismo, sempre com a fonte citada.",
+    "Explicar regras, estratégia e tecnologia para quem está começando a acompanhar.",
+    "Gerar conversa: enquetes, debates e perguntas que façam o seguidor comentar.",
+    "Acompanhar os brasileiros no automobilismo mundial.",
+    "Fazer o seguidor salvar e compartilhar os posts."
+  ],
+  "cores": {
+    "primaria": "#15171C",
+    "secundaria": "#FF3B30",
+    "texto_sobre_primaria": "#FFFFFF",
+    "texto_sobre_secundaria": "#15171C",
+    "fundo_claro": "#F1F1EE"
+  },
+  "fontes": {
+    "titulo": "BarlowCondensed-ExtraBoldItalic.ttf",
+    "destaque": "BarlowCondensed-SemiBold.ttf",
+    "texto": "Barlow-Medium.ttf"
+  },
+  "logo": "logo.png",
+  "design_padrao": {
+    "fundo": "escuro"
+  },
+  "estilos_visuais": {
+    "fotografia_esportiva": "Dynamic motorsport photograph, dramatic light, motion blur, shallow depth of field, cinematic contrast, realistic details",
+    "ilustracao_grafica": "Bold flat graphic illustration, clean vector shapes, speed lines, high contrast, limited palette",
+    "render_3d": "Clean 3D render, studio lighting, glossy materials, minimal dark background"
+  },
+  "restricoes_visuais_en": "Absolutely no text, letters, numbers, race numbers, words, signage, readable screens, logos, brand marks, sponsor decals, team liveries, national flags, watermarks, and no real people: no real drivers, team principals or celebrities. Cars must be generic, unbranded open-wheel race cars in plain colors. Helmets must be plain, without the designs of real drivers.",
+  "diretrizes_de_cena": [
+    "A cena precisa funcionar sem nenhum texto: nada de números de carro, letreiros, placas, telas com texto, logotipos ou adesivos de patrocinadores.",
+    "Nunca retrate pilotos, chefes de equipe ou qualquer pessoa real. Prefira objetos e lugares: pneus, capacete sem pintura de piloto, box, grid de largada, pista, bandeira quadriculada, cronômetro.",
+    "Carros genéricos, sem pintura de equipes reais e sem marcas.",
+    "A metade de baixo da imagem recebe um painel de texto. Coloque o assunto principal na metade de cima."
+  ]
+}
